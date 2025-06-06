@@ -1,5 +1,6 @@
-
 import React, { useState } from 'react';
+import { Heart, ShoppingCart } from 'lucide-react';
+import { useCart } from '@/contexts/CartContext';
 
 interface Product {
   id: number;
@@ -12,6 +13,7 @@ interface Product {
 
 const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const { addToCart, addToWishlist, removeFromWishlist, isInWishlist } = useCart();
 
   const categories = [
     { id: 'all', name: 'All Items' },
@@ -126,10 +128,16 @@ const Products = () => {
     ? products 
     : products.filter(product => product.category === selectedCategory);
 
-  const handleOrderNow = (productName: string) => {
-    const message = `Hi, I'm interested in ordering ${productName} from Sneha's Pickles!`;
-    const whatsappUrl = `https://wa.me/+919876543210?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+  const handleAddToCart = (product: Product) => {
+    addToCart(product);
+  };
+
+  const handleWishlistToggle = (product: Product) => {
+    if (isInWishlist(product.id)) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
   };
 
   return (
@@ -185,6 +193,19 @@ const Products = () => {
                     {product.category === 'non-veg' ? 'Non Veg' : product.category}
                   </span>
                 </div>
+                <button
+                  onClick={() => handleWishlistToggle(product)}
+                  className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-110"
+                >
+                  <Heart 
+                    size={20} 
+                    className={`${
+                      isInWishlist(product.id) 
+                        ? 'text-red-500 fill-red-500' 
+                        : 'text-gray-400 hover:text-red-500'
+                    } transition-colors duration-300`}
+                  />
+                </button>
               </div>
 
               {/* Product Info */}
@@ -203,10 +224,11 @@ const Products = () => {
                     {product.price}
                   </span>
                   <button
-                    onClick={() => handleOrderNow(product.name)}
+                    onClick={() => handleAddToCart(product)}
                     className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-2 rounded-full font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg flex items-center space-x-2"
                   >
-                    <span>Order Now</span>
+                    <ShoppingCart size={16} />
+                    <span>Add to Cart</span>
                   </button>
                 </div>
               </div>
