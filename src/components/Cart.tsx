@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { ShoppingCart, X, Plus, Minus, Heart } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
@@ -30,8 +31,8 @@ const Cart = () => {
     
     message += `\nTotal Amount: ₹${getTotalPrice().toFixed(2)}\n\nPlease confirm my order. Thank you!`;
     
-    // Use a proper phone number format for WhatsApp
-    const phoneNumber = "919876543210"; // Replace with actual phone number
+    // Use the specified phone number for WhatsApp
+    const phoneNumber = "917981833625"; // +91 7981833625
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     
     console.log("WhatsApp URL:", whatsappUrl);
