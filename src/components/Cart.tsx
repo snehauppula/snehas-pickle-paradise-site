@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ShoppingCart, X, Plus, Minus, Heart } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
@@ -26,12 +25,18 @@ const Cart = () => {
     let message = "Hi, I'd like to order the following items from Sneha's Pickles:\n\n";
     
     cartItems.forEach(item => {
-      message += `${item.name} - Quantity: ${item.quantity} - ${item.price} each\n`;
+      message += `• ${item.name} - Quantity: ${item.quantity} - ${item.price} each\n`;
     });
     
-    message += `\nTotal: ₹${getTotalPrice()}\n\nPlease confirm my order. Thank you!`;
+    message += `\nTotal Amount: ₹${getTotalPrice().toFixed(2)}\n\nPlease confirm my order. Thank you!`;
     
-    const whatsappUrl = `https://wa.me/+919876543210?text=${encodeURIComponent(message)}`;
+    // Use a proper phone number format for WhatsApp
+    const phoneNumber = "919876543210"; // Replace with actual phone number
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    
+    console.log("WhatsApp URL:", whatsappUrl);
+    console.log("Message:", message);
+    
     window.open(whatsappUrl, '_blank');
     clearCart();
     setIsOpen(false);
@@ -194,7 +199,7 @@ const Cart = () => {
                 <div className="border-t p-4 space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-lg font-bold">Total:</span>
-                    <span className="text-xl font-bold text-orange-600">₹{getTotalPrice()}</span>
+                    <span className="text-xl font-bold text-orange-600">₹{getTotalPrice().toFixed(2)}</span>
                   </div>
                   <Button
                     onClick={handleWhatsAppOrder}
